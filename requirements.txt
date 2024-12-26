@@ -1,0 +1,6 @@
+aiogram==3.*
+aiohttp
+asyncio==3.4.3
+logging==0.4.9.6
+python-dotenv
+requests==2.32.3
