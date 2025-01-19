@@ -1,1 +1,1 @@
-from user_setup import UserSetUpForm
+from src.forms.user_setup import UserSetUpForm

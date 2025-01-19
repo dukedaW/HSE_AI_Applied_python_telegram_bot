@@ -3,8 +3,13 @@ from aiogram import Dispatcher
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from handlers import routers
-from bot import bot
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from src.handlers import routers
+from src.bot import bot
 
 
 dp = Dispatcher()
@@ -27,9 +32,7 @@ async def cmd_help(message: Message):
         chat_id=message.chat.id,
         text="Доступные команды:\n"
         "/start - Начало работы\n"
-        "/form - Пример диалога\n"
-        "/keyboard - Пример кнопок\n"
-        "/joke - Получить случайную шутку"
+        "/create_user - создать профиль\n"
     )
 
 
