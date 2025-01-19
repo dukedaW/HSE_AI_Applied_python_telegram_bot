@@ -23,7 +23,7 @@ async def cmd_start(message: Message):
     await message.answer(
                         "Приветствую!\n"
                         "Добро пожаловать в трекер калорий\n"
-                        "Введите /help для ознакомления со списком команд\n")
+                        "/help - ознакомиться со списком команд\n")
 
 
 @dp.message(Command("help"))
@@ -32,6 +32,7 @@ async def cmd_help(message: Message):
         "Доступные команды:\n"
         "/start - Начало работы\n"
         "/create_user - создать профиль\n"
+        "/show_profile - показать Ваши данные\n"
     )
 
 
