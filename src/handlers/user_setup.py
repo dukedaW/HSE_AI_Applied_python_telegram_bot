@@ -177,6 +177,7 @@ async def handle_update_profile(callback_query: CallbackQuery, state: FSMContext
     param = callback_query.data
 
     if param == "cancel":
+        await state.clear()
         return
 
     param_name = {
