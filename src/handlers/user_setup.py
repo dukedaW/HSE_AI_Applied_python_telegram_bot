@@ -7,14 +7,18 @@ from aiogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
+import aiohttp
 
+from src.config import OPENWEATHER_KEY
 from src.forms import UserSetUpForm as Form
+from src.handlers.constants import WEATHER_URL
 from src.storage import users_data
 from src.storage.user_data import UserData
 
+
 router = Router(name="User Setup")
 
-@router.message(Command("create_user"))
+@router.message(Command("set_profile"))
 async def create_user(message: Message, state: FSMContext):
     user_id = message.from_user.id
     username = message.from_user.username
@@ -90,8 +94,38 @@ async def process_activity_time(message: Message, state: FSMContext):
 async def process_city(message: Message, state: FSMContext):
     user_id = message.from_user.id
     users_data[user_id].city = message.text
-    await message.answer("Спасибо! Информация записана")
+    await set_daily_norms(user_id)
+    await message.answer("Спасибо! Информация записана.")
     await state.clear()
+
+
+async def set_daily_norms(user_id: int):
+
+    weight = users_data[user_id].weight
+    activity_time = users_data[user_id].activity_time
+    city = users_data[user_id].city
+    age = users_data[user_id].age
+    height = users_data[user_id].height
+
+    url = WEATHER_URL.format(city=city,
+                             api_key=OPENWEATHER_KEY)
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            if response.status == 200:
+                weather_data = await response.json()
+            else:
+                raise ValueError("Couldn't get weather data")
+
+    temperature = weather_data['main']['temp']
+
+    users_data[user_id].water_norm = \
+        weight * 30 + \
+        activity_time // 30 * 500 + \
+        500 * (temperature > 25.0)
+
+    users_data[user_id].calories_norm = \
+        10 * weight + 6.25 * height - 5 * age
 
 
 @router.message(Command("show_profile"))
@@ -99,18 +133,20 @@ async def show_profile(message: Message):
     user_id = message.from_user.id
     if user_id not in users_data.keys():
         await message.answer("Данных о Вас нет.\n"
-                             "Выполните /create_user")
+                             "Выполните /set_profile")
         return
 
     user = users_data[user_id]
     await message.answer(f"""
     Ваши данные:
-    * Имя: {user.username},
-    * Возраст: {user.age},
-    * Вес: {user.weight} кг.,
-    * Рост: {user.height} см.,
-    * Активность: {user.activity_time} мин./день,
+    * Имя: {user.username}
+    * Возраст: {user.age}
+    * Вес: {user.weight} кг.
+    * Рост: {user.height} см.
+    * Активность: {user.activity_time} мин./день
     * Город: {user.city}
+    * Рассчитанная дневная норма калорий: {user.calories_norm} ккал.
+    * Рассчитанная дневная норма воды: {user.water_norm} мл.
     """)
 
 
@@ -120,7 +156,7 @@ async def update_profile(message: Message):
     user_id = message.from_user.id
     if user_id not in users_data.keys():
         await message.answer("Данных о Вас нет.\n"
-                             "Выполните /create_user")
+                             "Выполните /set_profile")
         return
 
     keyboard = InlineKeyboardMarkup(
@@ -133,7 +169,7 @@ async def update_profile(message: Message):
             [InlineKeyboardButton(text="Отменить", callback_data="cancel")],
         ]
     )
-    await message.reply("Какие данные Вы хотите изменить?", reply_markup=keyboard)
+    await message.answer("Какие данные Вы хотите изменить?", reply_markup=keyboard)
 
 
 @router.callback_query()
@@ -168,5 +204,6 @@ async def set_new_param(message: Message, state: FSMContext):
     except ValueError:
         raise ValueError('Trying to set param of wrong type')
 
+    await set_daily_norms(user_id)
+    await message.answer("Информация успешно обновлена!")
     await state.clear()
-    await message.answer("Данные успешно обновлены!")

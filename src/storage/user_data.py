@@ -1,6 +1,7 @@
 import dataclasses as dc
 import typing as tp
 
+
 @dc.dataclass
 class UserData:
     username: str
@@ -9,6 +10,10 @@ class UserData:
     height: float | None = None
     activity_time: int | None = None
     city: str | None = None
+    water_norm: float = 0.
+    calories_norm: float = 0.
+    cur_water: float = 0.
+    cur_calories: float = 0.
 
 
     def __getitem__(self, key):

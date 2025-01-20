@@ -31,8 +31,10 @@ async def cmd_help(message: Message):
     await message.answer(
         "Доступные команды:\n"
         "/start - Начало работы\n"
-        "/create_user - создать профиль\n"
+        "/set_profile - создать профиль\n"
         "/show_profile - показать Ваши данные\n"
+        "/update_profile - обновить данные в профиле\n"
+        # TODO add all commands
     )
 
 
