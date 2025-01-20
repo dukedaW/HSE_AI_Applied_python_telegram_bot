@@ -34,6 +34,7 @@ async def cmd_help(message: Message):
         "/set_profile - создать профиль\n"
         "/show_profile - показать Ваши данные\n"
         "/update_profile - обновить данные в профиле\n"
+        "/log_water - обновить данные по выпитой воде, показать статистику\n"
         # TODO add all commands
     )
 
