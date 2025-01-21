@@ -27,7 +27,7 @@ async def create_user(message: Message, state: FSMContext):
         username=username,
     )
 
-    await message.answer(f"Добрый день, {username}\n" 
+    await message.answer(f"Добрый день, {username}\n"
                         "введите некоторые данные о себе")
     await message.answer("Сколько Вам лет?")
     await state.set_state(Form.age)

@@ -35,6 +35,8 @@ async def cmd_help(message: Message):
         "/show_profile - показать Ваши данные\n"
         "/update_profile - обновить данные в профиле\n"
         "/log_water - обновить данные по выпитой воде, показать статистику\n"
+        "/log_calories - обновить данные по употребленным калориям\n"
+        "/log_progress - показать прогресс по всем параметрам (вода и калории)"
         # TODO add all commands
     )
 
