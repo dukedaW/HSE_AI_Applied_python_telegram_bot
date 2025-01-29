@@ -38,7 +38,7 @@ async def process_age(message: Message, state: FSMContext):
     user_id = message.from_user.id
 
     try:
-        age = int(message.text)
+        age = int(message.text.strip())
     except ValueError:
         await message.answer("Пожалуйста, введите только число")
         return
@@ -52,7 +52,7 @@ async def process_age(message: Message, state: FSMContext):
 async def process_weight(message: Message, state: FSMContext):
     user_id = message.from_user.id
     try:
-        weight = float(message.text)
+        weight = float(message.text.strip())
     except ValueError:
         await message.answer("Пожалуйста, введите только число")
         return
@@ -66,7 +66,7 @@ async def process_weight(message: Message, state: FSMContext):
 async def process_height(message: Message, state: FSMContext):
     user_id = message.from_user.id
     try:
-        height = float(message.text)
+        height = float(message.text.strip())
     except ValueError:
         await message.answer("Пожалуйста, введите только число")
         return
@@ -80,7 +80,7 @@ async def process_height(message: Message, state: FSMContext):
 async def process_activity_time(message: Message, state: FSMContext):
     user_id = message.from_user.id
     try:
-        activity_time = float(message.text)
+        activity_time = float(message.text.strip())
     except ValueError:
         await message.answer("Пожалуйста, введите только число")
         return
@@ -93,7 +93,7 @@ async def process_activity_time(message: Message, state: FSMContext):
 @router.message(Form.city)
 async def process_city(message: Message, state: FSMContext):
     user_id = message.from_user.id
-    users_data[user_id].city = message.text
+    users_data[user_id].city = message.text.strip()
     await set_daily_norms(user_id)
     await message.answer("Спасибо! Информация записана.")
     await state.clear()
