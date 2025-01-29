@@ -4,6 +4,8 @@
 * src/handlers - все обработчики сообщений
 * src/storage - хранилище данных о пользователях
 
+Команда запуска из корня репозитория `python src/main.py `
+
 # Скриншоты работы
 ### /start + /help
 ![Start](static/start.png)
