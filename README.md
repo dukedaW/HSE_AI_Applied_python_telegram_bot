@@ -12,6 +12,9 @@
 ![set_profile](static/set_profile.png)
 
 
+### /show_profile
+![show_profile](static/show_profile.png)
+
 ### /log_calories
 ![log_calories](static/log_calories.png)
 
